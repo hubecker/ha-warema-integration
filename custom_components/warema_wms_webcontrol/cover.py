@@ -10,26 +10,22 @@ from homeassistant.components.cover import (
 
 _LOGGER = logging.getLogger(__name__)
 
-#TODO Should be moved to homeassistant.const
-CONF_WEBCONTROL_SERVER_ADDR = 'webcontrol_server_addr'
-CONF_UPDATE_INTERVAL = 'update_interval'
+async def async_setup_entry(hass, config_entry, async_add_entities):
+    """Set up the Warema WMS WebControl cover platform from a config entry."""
 
-PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
-    vol.Optional(CONF_WEBCONTROL_SERVER_ADDR, default='http://webcontrol.local'): cv.url,
-    vol.Optional(CONF_UPDATE_INTERVAL, default=600): cv.positive_int
-})
+    webcontrol_server_addr = config_entry.data["webcontrol_server_addr"]
+    update_interval = config_entry.data["update_interval"]
 
-
-def setup_platform(hass, config, add_devices, discovery_info=None):
     from warema_wms import Shade, WmsController
-    shades = Shade.get_all_shades(WmsController(config[CONF_WEBCONTROL_SERVER_ADDR]), time_between_cmds=0.5)
-    add_devices(WaremaShade(s, config[CONF_UPDATE_INTERVAL]) for s in shades)
+    shades = Shade.get_all_shades(WmsController(webcontrol_server_addr), time_between_cmds=0.5)
 
+    async_add_entities(WaremaShade(s, update_interval) for s in shades)
 
 class WaremaShade(CoverEntity):
     """Represents a warema shade"""
 
     def __init__(self, shade, update_interval: int):
+        self._name = f"Warema WMS Cover ({webcontrol_server_addr})"
         self.shade = shade
         self.room = shade.get_room_name()
         self.channel = shade.get_channel_name()

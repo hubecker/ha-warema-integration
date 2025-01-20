@@ -1,0 +1,1 @@
+DOMAIN = "warema_wms_webcontrol"
