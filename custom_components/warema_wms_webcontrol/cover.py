@@ -19,12 +19,12 @@ _LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
     """Set up the Warema WMS WebControl cover platform from a config entry."""
-
+    
     url = config_entry.data["webcontrol_server_addr"]
     update_interval = config_entry.data["update_interval"]
 
     # Create an instance of the WMSWebControl library
-    wms_client = WMSWebControl(url)
+    wms_client = WmsController(url)
 
     shades = Shade.get_all_shades(wms_client, time_between_cmds=0.5)
 
