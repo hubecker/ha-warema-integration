@@ -3,7 +3,7 @@
   "step": {
     "user": {
       "title": "Configure Warema WMS WebControl Cover",
-      "description": "Enter the IP address and update interval for your Warema WMS WebControl.",
+      "description": "Enter the Webcontrol Server Address and update interval for your Warema WMS WebControl.",
       "data": {
         "webcontrol_server_addr": "Webcontrol Server Address",
         "update_interval": "Update Interval (seconds)"
