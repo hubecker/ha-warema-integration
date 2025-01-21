@@ -9,7 +9,6 @@ from homeassistant import config_entries, exceptions
 from homeassistant.core import HomeAssistant
 
 from .const import DOMAIN  # pylint:disable=unused-import
-from .hub import Hub
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -26,16 +25,6 @@ class WaremaWMSWebControlConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             url = user_input.get("webcontrol_server_addr")
             update_interval = user_input.get("update_interval")
-
-            hub = Hub(hass, data["webcontrol_server_addr"])
-            # The dummy hub provides a `test_connection` method to ensure it's working
-            # as expected
-            result = await hub.test_connection()
-            if not result:
-                # If there is an error, raise an exception to notify HA that there was a
-                # problem. The UI will also show there was a problem
-                raise CannotConnect
-
 
             # Validate URL and update interval
             if not self._is_valid_url(url):
