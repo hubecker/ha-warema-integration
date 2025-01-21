@@ -23,6 +23,8 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     url = config_entry.data["webcontrol_server_addr"]
     update_interval = config_entry.data["update_interval"]
 
+    logger.debug("URL: {}".url)
+
     # Create an instance of the WMSWebControl library
     wms_client = WmsController(url)
 
