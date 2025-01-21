@@ -5,12 +5,11 @@ import voluptuous as vol
 
 import homeassistant.helpers.config_validation as cv
 from homeassistant.components.cover import (
-    CoverEntity, 
-    DEVICE_CLASS_SHADE, 
-    SUPPORT_OPEN, 
-    SUPPORT_CLOSE,
-    SUPPORT_SET_POSITION, 
-    ATTR_POSITION, 
+    ATTR_POSITION,
+    ATTR_TILT_POSITION,
+    CoverDeviceClass,
+    CoverEntity,
+    CoverEntityFeature,
     PLATFORM_SCHEMA
 )
 
