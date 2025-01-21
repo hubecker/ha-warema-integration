@@ -5,8 +5,16 @@ import voluptuous as vol
 
 import homeassistant.helpers.config_validation as cv
 from homeassistant.components.cover import (
-    CoverEntity, DEVICE_CLASS_SHADE, SUPPORT_OPEN, SUPPORT_CLOSE,
-    SUPPORT_SET_POSITION, ATTR_POSITION, PLATFORM_SCHEMA)
+    CoverEntity, 
+    DEVICE_CLASS_SHADE, 
+    SUPPORT_OPEN, 
+    SUPPORT_CLOSE,
+    SUPPORT_SET_POSITION, 
+    ATTR_POSITION, 
+    PLATFORM_SCHEMA
+)
+
+from warema_wms import Shade, WmsController
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -16,8 +24,10 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     url = config_entry.data["url"]
     update_interval = config_entry.data["update_interval"]
 
-    from warema_wms import Shade, WmsController
-    shades = Shade.get_all_shades(WmsController(url), time_between_cmds=0.5)
+    # Create an instance of the WMSWebControl library
+    wms_client = WMSWebControl(url)
+
+    shades = Shade.get_all_shades(wms_client, time_between_cmds=0.5)
 
     async_add_entities(WaremaShade(s, update_interval) for s in shades)
 
