@@ -1,6 +1,6 @@
 {
   "domain": "warema_wms_webcontrol",
-  "name": "Warema WMS WebControl Cover",
+  "name": "Warema WMS WebControl",
   "version": "1.0.0",
   "documentation": "https://example.com/warema-wms-webcontrol-docs",
   "requirements": ["warema-wms-controller==0.2.4"],
