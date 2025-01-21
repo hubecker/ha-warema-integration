@@ -30,7 +30,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 
     shades = Shade.get_all_shades(wms_client, time_between_cmds=0.5)
 
-     _LOGGER.debug.debug("SHADES: {}".format(shades))
+    _LOGGER.debug.debug("SHADES: {}".format(shades))
 
     async_add_entities(WaremaShade(s, update_interval) for s in shades)
 
