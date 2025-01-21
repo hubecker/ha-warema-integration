@@ -6,32 +6,29 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.const import Platform
 
-from . import hub
-
 # List of platforms to support. There should be a matching .py file for each,
 # eg <cover.py> and <sensor.py>
 PLATFORMS = [Platform.COVER]
 
-type HubConfigEntry = ConfigEntry[hub.Hub]
+from .const import DOMAIN
 
+_LOGGER = logging.getLogger(__name__)
 
-async def async_setup_entry(hass: HomeAssistant, entry: HubConfigEntry) -> bool:
-    """Set up Hello World from a config entry."""
-    # Store an instance of the "connecting" class that does the work of speaking
-    # with your actual devices.
-    entry.runtime_data = hub.Hub(hass, entry.data["host"])
+async def async_setup(hass: HomeAssistant, config: dict):
+    """Set up the Warema WMS WebControl integration."""
+    hass.data[DOMAIN] = {}
+    return True
 
-    # This creates each HA object for each platform your device requires.
-    # It's done by calling the `async_setup_entry` function in each platform module.
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
+    """Set up Warema WMS WebControl from a config entry."""
+    hass.data[DOMAIN][entry.entry_id] = entry.data
+
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     return True
 
-
-async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
     """Unload a config entry."""
-    # This is called when an entry/configured device is to be removed. The class
-    # needs to unload itself, and remove callbacks. See the classes for further
-    # details
-    unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+    hass.data[DOMAIN].pop(entry.entry_id)
 
+    unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
     return unload_ok
